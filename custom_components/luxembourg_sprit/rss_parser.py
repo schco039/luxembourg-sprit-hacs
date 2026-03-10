@@ -37,17 +37,31 @@ class SpritRSSParser:
 
         except aiohttp.ClientError as err:
             _LOGGER.warning("Network error fetching RSS: %s", err)
-            raise UpdateFailed(f"Network error: {err}") from err  # noqa: F821
+            raise UpdateFailed(f"Network error: {err}") from err
         except ET.ParseError as err:
             _LOGGER.warning("XML parse error: %s", err)
-            raise UpdateFailed(f"Parse error: {err}") from err  # noqa: F821
+            raise UpdateFailed(f"Parse error: {err}") from err
 
     async def _fetch_rss(self) -> str:
-        headers = {"User-Agent": "HomeAssistant/LuxembourgSprit/1.0"}
+        headers = {"User-Agent": "Mozilla/5.0 (compatible; HomeAssistant/LuxembourgSprit/1.0)"}
         async with aiohttp.ClientSession() as session:
-            async with session.get(RSS_URL, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
+            async with session.get(
+                RSS_URL, headers=headers, timeout=aiohttp.ClientTimeout(total=15)
+            ) as resp:
                 resp.raise_for_status()
-                return await resp.text()
+                raw = await resp.read()
+                # Remove BOM if present
+                if raw.startswith(b"\xef\xbb\xbf"):
+                    raw = raw[3:]
+                # Decode
+                text = raw.decode("utf-8", errors="replace")
+                # Strip anything before XML start
+                for marker in ("<?xml", "<rss", "<feed"):
+                    start = text.find(marker)
+                    if start > 0:
+                        text = text[start:]
+                        break
+                return text
 
     def _parse_rss(self, xml_content: str) -> list[dict]:
         root = ET.fromstring(xml_content)
