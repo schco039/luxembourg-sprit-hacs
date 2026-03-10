@@ -1,0 +1,12 @@
+{
+  "domain": "luxembourg_sprit",
+  "name": "Luxembourg Spritpreise",
+  "version": "1.0.0",
+  "documentation": "https://github.com/schco039/luxembourg-sprit-hacs",
+  "issue_tracker": "https://github.com/schco039/luxembourg-sprit-hacs/issues",
+  "dependencies": [],
+  "codeowners": ["@schco039"],
+  "requirements": [],
+  "iot_class": "cloud_polling",
+  "config_flow": true
+}
