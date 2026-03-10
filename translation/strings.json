@@ -1,0 +1,30 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Luxembourg Spritpreise einrichten",
+        "description": "Erster Preis wird von Carbu.com geholt. Änderungen kommen danach vom RSS-Feed (lesfrontaliers.lu).",
+        "data": {
+          "vehicle_name": "Fahrzeugname",
+          "fuel_type": "Kraftstoffart",
+          "tank_size": "Tankgröße (Liter)",
+          "scan_interval": "Aktualisierungsintervall (Minuten)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Dieses Fahrzeug ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Optionen anpassen",
+        "data": {
+          "tank_size": "Tankgröße (Liter)",
+          "scan_interval": "Aktualisierungsintervall (Minuten)"
+        }
+      }
+    }
+  }
+}
